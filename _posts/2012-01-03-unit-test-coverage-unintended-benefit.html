@@ -1,0 +1,12 @@
+---
+layout: post
+title: Code coverage - unintended benefit
+date: '2012-01-03T15:53:00.000-05:00'
+author: Bill Schneider
+tags: 
+modified_time: '2012-01-07T21:26:47.386-05:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-2783649607286827668
+blogger_orig_url: http://wrschneider.blogspot.com/2012/01/unit-test-coverage-unintended-benefit.html
+---
+
+Unit test coverage is not a panacea. &nbsp;You can reach 100% unit test coverage without a single assertion about outputs or business logic, in which case the tests aren't that useful.<br /><br />Or are they? &nbsp;Just the act of executing every single line and branch of code does provide one important value: it demonstrates that you can show what inputs or conditions trigger which parts of the code. <br /><br />More importantly, the act of getting there helps reveal sections of code and conditionals that you might not even need. &nbsp;Having a coverage target also gives you incentives to stay "clean" and avoid gratuitous not-null checks or try/catch blocks, two pet peeves of mine. &nbsp;(I've seen too many not-null checks that looked defensive at first but in reality just kicked the can down the road, further obscuring the real problem.) <br /><br />The other benefit I've found is that a coverage goal encourages refactoring that you should be doing anyway, because well-factored code is easier to unit test. &nbsp;For instance I had one JSF/JPA application where I was accessing JPA EntityManagers directly in the JSF managed beans. &nbsp;This made unit tests on the managed beans annoying because I had to mock out EntityManager.createQuery and dozens of Query.setParameter calls for each JPA action. &nbsp;By pulling the JPA actions into a separate DAO layer, I could just mock a single call to myDAO.getStuff(arguments). &nbsp;Plus, after isolating the DAO, I could then write an integration test on the DAO hooking up to a real database.<br /><br />Other related links:<br /><a href="http://www.wakaleo.com/blog/316-code-coverage-as-a-refactoring-tool">http://www.wakaleo.com/blog/316-code-coverage-as-a-refactoring-tool</a><br /><a href="http://codebetter.com/patricksmacchia/2009/06/07/high-test-coverage-ratio-is-a-good-thing-anyway/">http://codebetter.com/patricksmacchia/2009/06/07/high-test-coverage-ratio-is-a-good-thing-anyway/</a><br /><br />

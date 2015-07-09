@@ -1,0 +1,12 @@
+---
+layout: post
+title: Web stacks that support change - but what kind?
+date: '2013-11-24T15:17:00.003-05:00'
+author: Bill Schneider
+tags: 
+modified_time: '2013-11-24T15:17:23.994-05:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-7575672120834678954
+blogger_orig_url: http://wrschneider.blogspot.com/2013/11/web-stacks-that-support-change-but-what.html
+---
+
+I've recently made a transition from using dependency-injection heavy Java frameworks (Spring, Java EE) to full-stack dynamic language frameworks like Grails, Django, Ruby on Rails etc.<br /><br />With these full-stack frameworks, you need much less code to get something done, between the magic of dynamic languages, and the elimination of dependency injection . &nbsp;As a result it's easier to iterate rapidly as business requirements change, because there's fewer places to touch and fewer layers of indirection to sort through.<br /><br />It made me wonder whether&nbsp;dependency injection in Spring and Java EE was intended to address a different kind of flexibility - flexibility to change out pieces of the tech stack. &nbsp;I feel like this kind of flexibility is still a hangover from EJB 2.x. &nbsp;The legacy use case was something like this: maybe EJB won't always suck so you put your business logic in a service that gets injected, and you&nbsp;<i>could</i>&nbsp;replace your POJO implementation with an EJB without changing the dependencies.<br /><br />I feel like the flexibility from&nbsp;dependency injection&nbsp;was overrated - think about how often during the typical lifecycle you make a significant tech stack change, and think about how much time you spend wading through all those extra layers of indirection and configuration to make a functional change. &nbsp;Also, these days with the proliferation of viable technologies, you are almost as likely to try something totally different (node.js, perhaps?) than to change out your ORM in isolation. <br /><br />Yes, things are better today with annotations and better dynamic bytecode generation (e.g., no gratuitous interface with single implementation). &nbsp;Still it feels like dynamic proxies are a clumsy mechanism for providing services like transactions, when compared with frameworks that provide these capabilities through dynamic language features or closures. &nbsp;Given the choice, I think I'd rather go with a tech stack that makes it simpler and more efficient to address business requirement changes, even if it makes it harder to switch between EclipseLink and Hibernate. 

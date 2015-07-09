@@ -1,0 +1,12 @@
+---
+layout: post
+title: solved windows 7 sleep problem
+date: '2011-09-23T22:23:00.001-04:00'
+author: Bill Schneider
+tags: 
+modified_time: '2011-09-23T22:23:40.476-04:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-3799416942236244374
+blogger_orig_url: http://wrschneider.blogspot.com/2011/09/solved-windows-7-sleep-problem.html
+---
+
+Sleep mode was grayed out on new Dell laptop (Latitude E6420) on Windows 7.<br /><br />The fix was to disable the legacy VGA driver, which came up with a yellow warning icon in Device Manager ("device cannot start"). <br /><br />Simply installing the latest Intel Graphics drivers did not fix the issue - the legacy VGA driver had to be explicitly disabled.

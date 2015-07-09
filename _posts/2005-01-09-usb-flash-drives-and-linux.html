@@ -1,0 +1,26 @@
+---
+layout: post
+title: USB flash drives and Linux
+date: '2005-01-09T08:48:00.000-05:00'
+author: Bill Schneider
+tags: 
+modified_time: '2005-01-09T09:00:19.093-05:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-110527850632268878
+blogger_orig_url: http://wrschneider.blogspot.com/2005/01/usb-flash-drives-and-linux.html
+---
+
+I've had to set up a USB stick with Linux recently.  It's fairly easy if you know the right magic.
+<br />
+<br />Here are some links to useful resources:
+<br />
+<br /><a href="http://www.extremetech.com/article2/0,1558,1256766,00.asp">Post on ExtremeTech.com</a>
+<br /><a href="http://www.ibiblio.org/pub/Linux/docs/HOWTO/other-formats/html_single/Flash-Memory-HOWTO.html">Flash memory HOWTO on ibiblio</a>
+<br />
+<br />Essentially it boils down to adding a line to /etc/fstab and then mounting /dev/sda1 or /dev/sdb1 on some mount point (directory). You don't strictly need to edit /etc/fstab, but if you don't you will need to be root in order to write anything on it. Here's the magic for /etc/fstab to allow non-root to get read/write access:
+<br /><font><span style="color: rgb(0, 0, 0);"><pre class="screen">/dev/sda1 /mnt/usbstick vfat        rw,user,noauto 0 0
+<br /></pre></span></font></span>(assuming your mount point is /mnt/usbstick.)
+<br />
+<br />If that doesn't work, check /var/log/messages and see if your stick is on /dev/sdb1 instead.
+<br />
+<br />I'm looking forward to it being as easy to use USB sticks under a default Linux distro as it is under Windows, though. I hate to say it, but under Windows, they "just work."
+<br />

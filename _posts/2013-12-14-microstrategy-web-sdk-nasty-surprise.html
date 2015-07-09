@@ -1,0 +1,12 @@
+---
+layout: post
+title: MicroStrategy Web SDK - WTFs
+date: '2013-12-14T20:54:00.000-05:00'
+author: Bill Schneider
+tags: 
+modified_time: '2013-12-14T20:57:04.709-05:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-1320269725237305066
+blogger_orig_url: http://wrschneider.blogspot.com/2013/12/microstrategy-web-sdk-nasty-surprise.html
+---
+
+MicroStrategy's Web SDK did something I totally didn't expect: calling WebReportInstance.getPrompts() actually <i>runs the report</i>&nbsp;if the report has no prompts. WTF??<br /><br />This is a big deal if the report takes a long time to run. &nbsp;I would expect a method called getPrompts to, you know, get the list of prompts.<br /><br />After a few rounds with support, I got the answer:<br /><br /><pre class="brush:java"><br />reportSource.setExecutionFlags(EnumDSSXMLExecutionFlags.DssXmlExecutionResolve);</pre> <span style="color: #1f497d; font-family: &quot;Calibri&quot;,&quot;sans-serif&quot;; font-size: 11.0pt; mso-ansi-language: EN-US; mso-bidi-font-family: &quot;Times New Roman&quot;; mso-bidi-language: AR-SA; mso-fareast-font-family: Calibri; mso-fareast-language: EN-US; mso-fareast-theme-font: minor-latin;"><br /></span>Note that call is on the ReportSource before getting the ReportInstance.<br /><br />Same goes for Documents.<br /><br />Speaking of WTF's with MicroStrategy's Web SDK - even though all subclasses of WebResultSetInstance (documents and reports) implement a getMessage() method that returns a subclass of WebMessage, the method is implemented only on the individual subclasses. <br /><br />In other words, instead of this:<br /><br /><pre class="brush: java" name="code">class WebResultSetInstance { public WebMessage getMessage() }<br /></pre><br />you get this<br /><br /><pre class="brush: java">class WebDocumentInstance { public WebDocumentMessage getMessage() }<br />class WebReportInstance { public WebReportMessage getMessage() }</pre><br />This is annoying, because it prevents you from doing something like this<br /><br />resultSetInstance.getMessage().removeFromInbox()<br /><br />interchangeably with a report or document. &nbsp;You need to treat both report and document cases separately.<br /><br />

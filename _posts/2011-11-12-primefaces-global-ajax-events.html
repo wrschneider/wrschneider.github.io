@@ -1,0 +1,16 @@
+---
+layout: post
+title: Primefaces global AJAX events
+date: '2011-11-12T09:04:00.001-05:00'
+author: Bill Schneider
+tags:
+- primefaces
+- jquery
+- ajax
+- jsf
+modified_time: '2012-01-13T21:53:25.614-05:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-4667360433213671403
+blogger_orig_url: http://wrschneider.blogspot.com/2011/11/primefaces-global-ajax-events.html
+---
+
+You can use jQuery global AJAX events with PrimeFaces to refactor behaviors that appear on multiple components. &nbsp;A good example is if you have a data grid with multiple p:commandLinks and other controls that execute different methods and re-render the grid, and need to run the same onComplete in all of them.<br /><div><br /></div><div>For example, if you start with something like this:</div><div><br /></div><pre class="brush: xml;">&lt;h:panelGroup id="grid"&gt;...&lt;/h:panelGroup&gt;<br />&lt;p:commandLink update="grid" actionListener="#{bean.update1}" onComplete="updateGrid()"/&gt;<br />&lt;p:commandLink update="grid" actionListener="#{bean.update2}" onComplete="updateGrid()"/&gt;<br />&lt;p:commandLink update="grid" actionListener="#{bean.update3}" onComplete="updateGrid()"/&gt;<br /></pre><div><br />You could pull the updateGrid() statement out into an AJAX listener like this<br /><br /><pre></pre><pre class="brush: js">jQuery(document).ajaxComplete(function(e, xhr, opts) {<br />  $response = jQuery(xhr.responseXML);<br />  if ($response.find("div[id$='grid']").length &gt; 0) {<br />     updateGrid();<br />  }<br />});<br /></pre><pre><span class="Apple-style-span" style="font-family: 'Times New Roman';"><span class="Apple-style-span" style="white-space: normal;">By using ajaxComplete and parsing the XHR response object, you can see which DIV was going to be impacted by the partial update. &nbsp;That way, if you had some other AJAX controls (say, an autocompleter) that you didn't want to trigger the updateGrid() function, you could filter that out. &nbsp;Another option would be to set global=false on the specific Primefaces components that you don't want to fire the global jQuery ajaxComplete event. &nbsp;The Primefaces autocompleter doesn't support this in Primefaces 2.x but does in 3.0. &nbsp;</span></span></pre></div>

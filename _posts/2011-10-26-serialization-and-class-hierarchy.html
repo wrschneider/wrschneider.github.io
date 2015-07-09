@@ -1,0 +1,12 @@
+---
+layout: post
+title: Serialization, class hierarchy and preserving sessions
+date: '2011-10-26T08:39:00.000-04:00'
+author: Bill Schneider
+tags: 
+modified_time: '2011-10-26T08:39:37.739-04:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-2352121751565864812
+blogger_orig_url: http://wrschneider.blogspot.com/2011/10/serialization-and-class-hierarchy.html
+---
+
+If you have a class that implements Serializable, superclass fields do NOT get serialized unless the parent class also explicitly implements Serializable.  That bit me the other day with session-scoped objects and preserving sessions across restarts, using Glassfish 3.1.1.    Glassfish will complain if any objects in session scope or their properties don't implement serializable, but if those objects extend some parent class, the parent class fields are silently ignored and end up being null on session restore.  So the source of the problem wasn't immediately clear, like it would have been if individual session objects or properties within them weren't serializable.

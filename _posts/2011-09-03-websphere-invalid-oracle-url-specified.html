@@ -1,0 +1,12 @@
+---
+layout: post
+title: WebSphere "invalid Oracle URL specified" error
+date: '2011-09-03T10:59:00.001-04:00'
+author: Bill Schneider
+tags: 
+modified_time: '2011-09-03T10:59:15.939-04:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-7575721262538133771
+blogger_orig_url: http://wrschneider.blogspot.com/2011/09/websphere-invalid-oracle-url-specified.html
+---
+
+<br />Another unhelpful WebSphere error, this time with an assist from Oracle.<br /><br />This happened to me when I configured my JDBC data source with the default wpdbJDBC_oracle JDBC provider, using the XA datasource (OracleXADataSource), and used the "container managed" J2C authentication alias instead of "component managed". &nbsp;The WebSphere admin console will successfully test the connection, but when you use it in a web application, it will fail with this "Invalid Oracle URL specified" error. &nbsp;It was so hard to track down because it made me focus on the JDBC URL, which wasn't ever the problem. &nbsp;It never occurred to me that the admin console and the web applications would somehow be getting connections and signing into Oracle differently, which tricked me into thinking that my configuration was really ok when it wasn't.<br /><br />For the record, the web application was just doing a straight JNDI datasource lookup without any resource-ref mapping in web.xml, using the same JNDI name as bound in the server.<br /><br />Also, changing to a different non-XA JDBC provider using plain OracleConnectionPoolDataSource resulted in "invalid username/password".<br /><br />When I changed the datasource to use the component-managed alias instead, and restarted, everything worked.<br />

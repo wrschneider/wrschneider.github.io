@@ -1,0 +1,16 @@
+---
+layout: post
+title: Primefaces p:ajax and jQuery AJAX events
+date: '2011-11-08T20:13:00.002-05:00'
+author: Bill Schneider
+tags:
+- primefaces
+- jquery
+- ajax
+- jsf
+modified_time: '2012-01-13T21:53:51.537-05:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-3846035398189162604
+blogger_orig_url: http://wrschneider.blogspot.com/2011/11/primefaces-pajax-and-jquery-ajax-events.html
+---
+
+All of Primefaces' JSF components use the jQuery AJAX engine, which means you can catch global AJAX events with $(document).ajaxStart and $(document).ajaxStop.<br /><div><br /></div><div>Standard JSF components like h:selectOneMenu will also go through jQuery when using a p:ajax facet (vs. standard f:ajax).</div><div><br /></div><div>Conversely, jsf.ajax.onEvent does not appear to work with Primefaces components as it does for f:ajax. &nbsp;</div><div><br /></div><div>See also:</div><div><a href="http://stackoverflow.com/questions/6166352/fajax-and-jquerys-document-ajaxstart-dont-work-together">http://stackoverflow.com/questions/6166352/fajax-and-jquerys-document-ajaxstart-dont-work-together</a></div><div></div>

@@ -1,0 +1,16 @@
+---
+layout: post
+title: 'Primefaces AJAX callbacks: onstart vs. onclick'
+date: '2012-01-03T15:38:00.001-05:00'
+author: Bill Schneider
+tags:
+- primefaces
+- jquery
+- ajax
+- jsf
+modified_time: '2012-01-13T21:53:03.879-05:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-5541309248805667849
+blogger_orig_url: http://wrschneider.blogspot.com/2012/01/primefaces-ajax-callbacks-onstart-vs.html
+---
+
+I just learned the hard way that onstart and onclick are not the same thing.<br /><br />In particular, a "return ..." has very different semantics in both cases.<br /><br />Consider this code:  <br /><pre style="brush: xml;">&lt;p:commandLink action="#{bean.method}" onstart="return func()" ...&gt;<br /></pre><br />If "func()" return false, this code will abort the AJAX request and bean.method() won't get called.<br />If "func()" returns true, the AJAX request processes.<br />If you replace onstart with onclick, the AJAX request will abort <em>even if func() returns true</em>.<br /><br />That's because the Primefaces puts the code to generate the AJAX request in the onclick handler, pre-pending your code from the p:commandLink onclick before it. &nbsp;If your code returns, the AJAX request never gets sent.

@@ -1,0 +1,12 @@
+---
+layout: post
+title: C# envy
+date: '2012-04-20T08:30:00.000-04:00'
+author: Bill Schneider
+tags: 
+modified_time: '2012-04-20T10:16:32.968-04:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-6550306201743045422
+blogger_orig_url: http://wrschneider.blogspot.com/2012/04/c-envy.html
+---
+
+I was converting a small Java class to C#, and found a lot to like about it as a language. &nbsp;For even a simple class - just collection and string manipulation, no frameworks - it seemed like some common tasks were easier, more elegant and less verbose. &nbsp;Some examples:<br /><div><ul><li>Object initializers. &nbsp;It's great to be able to do 'new Foo() { bar = "xxx", baz = "yyy" }' instead of having to call setters individually, or having to make a constructor passing in properties in a specific order.</li><li>Collection initializers, like "new List&lt;int&gt; {1,2,3}" instead of Arrays.asList</li><li>"var" keyword. &nbsp;var foo = new List&lt;int&gt;, as opposed to redundant List&lt;int&gt; x = new ArrayList&lt;int&gt;().</li><li>Operator overloading, especially "==" for immutable value types like strings and integers. &nbsp;You don't have to worry about things like "x == y" working if x and y are both ints but not Integers. &nbsp;</li><li>Operator overloading for collection indexing. &nbsp;Where's the "Get" method on a Dictionary? &nbsp; Don't need one - it's square brackets, just like a Javascript object.</li></ul><div>It looks like Java 8 will give us collection initializers but I'm not sure about others.</div></div>

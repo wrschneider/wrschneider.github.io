@@ -1,0 +1,12 @@
+---
+layout: post
+title: 
+date: '2011-09-25T09:45:00.000-04:00'
+author: Bill Schneider
+tags: 
+modified_time: '2011-09-25T09:45:19.180-04:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-5755932689427525647
+blogger_orig_url: http://wrschneider.blogspot.com/2011/09/connecting-microstrategy-8.html
+---
+
+<br />Connecting MicroStrategy 8.x Web SDK to a MicroStrategy 9.x Intelligence Server (iServer) doesn't work. &nbsp;That in itself isn't a surprise. &nbsp;What <i>is</i>&nbsp;surprising, though, is that the failure persists and then prevents the 8.x Web SDK from working with an 8.x iServer like it's supposed to on subsequent connections, resulting in an error "The required encryption level is not supported in this release."<br /><br />Apparently, this is a result of initializing "static" fields on the first session creation, such that those values get stuck for the lifetime of the classloader. &nbsp;In this case, the connection to 9.x sets some of these values in ways that are incompatible with 8.x. &nbsp;If the first session creation is to an 8.x iServer, then there's no problem - attempting to connect to 9.x will break but won't prevent subsequent connections to 8.x.<br /><br />This is an unusual edge case, to be sure. &nbsp;I only encountered it during development in a heterogeneous environment, with a custom portal that connects to multiple iServers. <br />

@@ -1,0 +1,63 @@
+---
+layout: post
+title: Avoiding Anemic Domain Models with Hibernate
+date: '2005-01-01T08:36:00.000-05:00'
+author: Bill Schneider
+tags: 
+modified_time: '2005-01-01T21:02:40.196-05:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-110458868731734186
+blogger_orig_url: http://wrschneider.blogspot.com/2005/01/avoiding-anemic-domain-models-with.html
+---
+
+One of Hibernate's most under-appreciated features is its <a href="http://www.hibernate.org/hib_docs/reference/en/html/persistent-classes.html#persistent-classes-pojo-accessors">ability to persist private fields.</a> This feature is useful for avoiding what Martin Fowler calls the <a href="http://www.martinfowler.com/bliki/AnemicDomainModel.html">Anemic Domain Model</a> anti-pattern, where domain objects (entities) are reduced to "dumb" record structures with no business logic. In an Anemic Domain Model, you lose all the benefits of OOP: polymorphism, data hiding, encapsulation, etc.
+<br />
+<br />The Anemic Domain Model may have originally evolved from EJB CMP, which requires any persistent field to be accessible directly with a public getter/setter. Developers using POJO frameworks like Hibernate often duplicate the same pattern, though, simply replacing the entity beans with POJOs.
+<br />
+<br />This is not just an academic discussion; this has real consequences for the quality of a codebase. (Academically, this is part of the OOP-RDBMS "impedance mismatch"--in particular, that there is no distinction between a setter/constructor call that actually mutates/constructs an object and one that is merely incidental to materializing an existing object's state from persistent storage.) Let's say you're developing a system for issue tracking with a business rule like "anyone can create a ticket or change its status, but only managers can raise it to 'critical.'" A fragment of an Issue object might look like this (some detail omitted to focus on encapsulation/data hiding issues):
+<br /><pre>public class Issue {
+<br />private String m_status;
+<br />public String getStatus() {
+<br />  return m_status;
+<br />}
+<br />public void setStatus(String newStatus) {
+<br />  if (newStatus == STATUS_CRITICAL &&amp; !getCurrentUser().isManager()) {
+<br />    throw new SecurityException("critical.requires.manager");
+<br />  }
+<br />  m_status = newStatus;
+<br />}
+<br />}
+<br /></pre>This looks great until you realize that setStatus(STATUS_CRITICAL) is also going to be called from the persistence layer in materializing an existing Issue that is <span style="font-style: italic;">already </span>critical, not just when making an explicit change through the UI workflow. Since anyone can view any issue, SecurityException will be thrown when a non-manager tries to view an issue that is already critical. We immediately recognize that the persistence layer needs a way to get "privileged" access to set the underlying field directly, bypassing business logic.
+<br />
+<br />The typical workaround is to give up encapsulation and move the business logic into the corresponding service layer object (e.g., stateless session bean) for issue transactions:
+<br /><pre>public class IssueManager {
+<br />public Issue findIssueById(Long id) ;
+<br />public Issue newIssue(... fields ...) {
+<br />  // begin TX
+<br />  // ... setup new issue
+<br />  if (status == STATUS_CRITICAL &&amp; !getCurrentUser().isManager()) {
+<br />     throw new SecurityException("critical.requires.manager");
+<br />  }
+<br />  issue.setStatus(status);
+<br />  // ...
+<br />  // commit TX
+<br />}
+<br />public void changeStatus(Long id, String status) {
+<br />  // begin TX, load issue
+<br />  if (status == STATUS_CRITICAL &&amp; !getCurrentUser().isManager()) {
+<br />     throw new SecurityException("critical.requires.manager");
+<br />  }
+<br />  issue.setStatus(status);
+<br />  // commit TX
+<br />}
+<br />}
+<br /></pre>Now, two real consequences are apparent.  First, giving up encapsulation leads to cut-and-paste programming, violating the <a href="http://www.pragmaticprogrammer.com/ppbook/extracts/rule_list.html">"don't repeat yourself" principle</a>; this increases the risk of error of the business rule not being cut-and-paste again somewhere it's needed. Second, you lose polymorphism; it is now very difficult to have a subclass of Issue with slightly different business rules. (For example, maybe the main Issue has no restriction on setting status, but a specific type of issue has the critical-requires-manager rule.)
+<br />
+<br />It's true that you could have two separate sets of getters/setters in the Issue itself, one that applies business logic and one that allows direct access and is only used by persistence. This would address the polymorphism issue. But if that direct accessors are also public (as EJB CMP requires) then you still lose data hiding; nothing prevents your service layer/transaction scripts from calling these methods directly.
+<br />
+<br />If you're using Hibernate, though, there is a very elegant solution. Hibernate is effectively "privileged" by manipulating bytecode, so it can touch private fields directly. Hibernate gives you two options in the above scenario:
+<br /><ul>   <li>You can have two separate bean-style properties linked to the same underlying field, one with private getters/setters and the other with public. The private methods access the underlying field directly, and the public ones apply business rules. This is the preferred approach, but has the downside of verbosity, plus you have to use different property names in HQL (private) and everywhere else (public).
+<br /> </li>   <li>Hibernate can also persist fields directly by using the <a href="http://www.hibernate.org/hib_docs/reference/en/html/mapping.html#mapping-declaration-property">"access" attribute on @hibernate.property</a> and so on. The upside is that this is more concise with only a single public bean-style property, but using access="field" requires the field name to exactly match the private instance variable name; this won't work if you have some kind of Hungarian naming convention like "m_foo". You can do something like access="MyFieldAccessor" where MyFieldAccessor is a custom class implementing <tt class="literal">net.sf.hibernate.property.PropertyAccessor</tt>, implementing your naming convention (mapping bean property names to member var names) but that requires extra effort.</li> </ul> There are other uses for this feature in Hibernate:
+<br /><ul>   <li>Primary keys are generally supposed to be immutable by normal business logic, set only within the persistence layer. So, "setId" methods can almost always be private or protected.
+<br /> </li>   <li>Collections getters and setters can also be kept private, to preserve data hiding (prevent rep exposure). Otherwise, when business logic can manipulate a collection directly, it's difficult to enforce business rules on the collection elements, or even to ensure the elements are of the correct type. (The latter may partially be addressed by generics in Java 5 and/or Hibernate 3.)
+<br /> </li> </ul> I believe JDO also instruments classes at runtime to get similar privileged access to persistent fields.
+<br />

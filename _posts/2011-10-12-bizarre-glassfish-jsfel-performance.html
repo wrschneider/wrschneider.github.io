@@ -1,0 +1,12 @@
+---
+layout: post
+title: Bizarre Glassfish JSF/EL performance issue
+date: '2011-10-12T21:42:00.002-04:00'
+author: Bill Schneider
+tags: 
+modified_time: '2011-10-12T21:42:38.945-04:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-7557090463342699895
+blogger_orig_url: http://wrschneider.blogspot.com/2011/10/bizarre-glassfish-jsfel-performance.html
+---
+
+I found a performance issue with JSF on Glassfish 3.1.1 (and prior) in an unexpected place: a seemingly innocuous line of code like<br /><br />&lt;h:outputText rendered="#{request.requestURL.indexOf('page') ne -1}" .... /&gt;<br /><br />It turns out that invoking methods through EL expressions (new in EL 2.2) triggers creating a new ExpressionFactory, which in turn calls findResource/getResourceAsStream - a file I/O operation. <br /><br />These expressions in the "rendered" attribute are particularly bad because they get executed multiple times in various parts of the JSF lifecycle. <br /><br />See:<br /><a href="http://java.net/jira/browse/JAVASERVERFACES-2223">http://java.net/jira/browse/JAVASERVERFACES-2223</a><br /><a href="http://java.net/jira/browse/UEL-19">http://java.net/jira/browse/UEL-19</a><br /><br />On the plus side - jvisualvm totally rocks. &nbsp;I am shocked by how easy it was to get started with for tracking down these issues and it was right there in $JAVA_HOME/bin all along.

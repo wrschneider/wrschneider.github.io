@@ -1,0 +1,15 @@
+---
+layout: post
+title: Javascript, getYear and cookie expiration
+date: '2011-08-26T20:12:00.000-04:00'
+author: Bill Schneider
+tags: 
+modified_time: '2011-08-26T20:12:32.608-04:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-3814469751662385242
+blogger_orig_url: http://wrschneider.blogspot.com/2011/08/javascript-getyear-and-cookie.html
+---
+
+Chrome and Firefox both return an offset from 1900 for date.getYear() instead of a four-digit year (pre-Y2K, a two-digit year).  So new Date().getYear() returns 111 instead of 2011.<br /><br />Old news, right?  Well, I've been getting away with this for a while and not realizing it, in logic to expire cookies, and didn't notice until switching to Chrome.<br /><br />The cookie expiration function was something like this<br /><br /><pre class="brush:js">Date d = new Date();
+<br />d.setYear(d.getYear() - 1); // last year = 110
+<br />document.cookie = "COOKIE_NAME=; expires=" + d.toGMTString();
+<br /></pre><br />Firefox was happily setting the cookie's expiration to the year 0110, which was wrong but still accomplishing the end goal of expiring the cookie.  <br /><br />Chrome, on the other hand, mangled toGMTString to only print the three digits "110" and was not interpreting the cookie as expired.<br /><br />Of course, the better question is why write this code yourself anyway, when jQuery, Dojo, etc., all have their own cookie APIs. 

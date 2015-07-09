@@ -1,0 +1,12 @@
+---
+layout: post
+title: Infinite loop in Glassfish exception logging
+date: '2011-10-11T21:33:00.001-04:00'
+author: Bill Schneider
+tags: 
+modified_time: '2011-10-11T21:33:19.522-04:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-4812172292728148947
+blogger_orig_url: http://wrschneider.blogspot.com/2011/10/infinite-loop-in-glassfish-exception.html
+---
+
+When Glassfish catches a ServletException, it calls getRootCause recursively on each successive unwrapped, nested exception <b>by reflection</b>. &nbsp;This is fine for wrapped ServletException and JspException, which have well-defined semantics for this method, but creates a big problem if you have an application-defined exception that happens to use the same "getRootCause" name with different semantics. <br /><br />So I created a Glassfish bug report:<br /><a href="http://java.net/jira/browse/GLASSFISH-17390">http://java.net/jira/browse/GLASSFISH-17390</a><br /><br />Related original bug in Tomcat, since fixed:<br /><a href="https://issues.apache.org/bugzilla/show_bug.cgi?id=39088">https://issues.apache.org/bugzilla/show_bug.cgi?id=39088</a>

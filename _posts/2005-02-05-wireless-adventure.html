@@ -1,0 +1,23 @@
+---
+layout: post
+title: Wireless adventure
+date: '2005-02-05T16:46:00.000-05:00'
+author: Bill Schneider
+tags: 
+modified_time: '2005-02-05T17:00:43.756-05:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-110764084375738137
+blogger_orig_url: http://wrschneider.blogspot.com/2005/02/wireless-adventure.html
+---
+
+I must have bad luck with my home wireless network.   I had a D-Link DI-514 wireless router, which worked great until I got a new IBM Thinkpad X40 with the built-in Centrino.  After various firmware upgrades, configuration changes, etc., I could not get the two to work together--I was getting roughly 30% packet loss and 500 ms ping times, with the notebook right next to the router antenna.
+<br />
+<br />So I got a new DI-524 which had a big Centrino-verified logo on the front.  But, after unpacking it and hooking it up, it won't talk to my cable modem (also a D-Link product, a DCM-200) and the "WAN" link light doesn't even come on. 
+<br />
+<br />I take the thing back to the store, bring home another DI-524 *and* a Linksys BEFW11S4 just to be safe.   Sure enough, they *all* have the same problem with the WAN link light.  What are the odds?
+<br />
+<br />After some googling and a call to D-Link tech support (who was way more knowledgeable than I expected) it turns out that this mass-market consumer equipment doesn't do a good job of auto-sensing 10- vs. 100-mbit ethernet, and my old cable modem is only 10mb.  After a firmware upgrade it all worked. 
+<br />
+<br />The design lesson here is the "principle of least astonishment"--I'm somewhat knowledgeable about network stuff, but so far every piece of 100mbit ethernet equipment I've used doesn't just break if the other end is only 10mbit.   So when that link light didn't come on, I immediately assumed the unit was defective, especially when there was no documentation of this issue.  I could have saved myself (and Best Buy's returns counter) a whole lot of trouble if the problem were more clear.    
+<br />
+<br />
+<br />

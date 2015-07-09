@@ -1,0 +1,13 @@
+---
+layout: post
+title: WebSphere Portal error - "Puma requested entity type Group from VMM but received
+  Entity"
+date: '2011-08-30T10:24:00.001-04:00'
+author: Bill Schneider
+tags: 
+modified_time: '2011-08-30T10:28:18.831-04:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-7264063111428714331
+blogger_orig_url: http://wrschneider.blogspot.com/2011/08/websphere-portal-error-puma-requested.html
+---
+
+Got this error when trying to upgrade from WebSphere Portal 6.0 to 7.0.<br /><br />com.ibm.portal.puma.SchemaViolationException: EJPSG0053E: Puma requested entity type Group from VMM but received Entity.<br /><br />This sets a record for one of the most unhelpful errors ever.  It can be caused by a bad entry in LDAP - in my particular case, it was a few groups whose objectClasses (groupOfUniqueNames and top) had somehow been saved with base-64 encoding instead of as plain text, although the values themselves when decoded were correct.  The same exact LDAP directory was also working fine with WebSphere 6.0.<br /><br />One of IBM's pages implies that the configuration itself is broken - when in my case, the configuration was perfectly fine and the problem was a bad entry in LDAP.  The error gives no help tracking down the broken entry.<br /><br />https://www-304.ibm.com/support/docview.wss?uid=swg21419580<br /><br />Other IBM resources imply that the specific configuration issue is making sure that the group and user LDAP object classes are unique - i.e., don't use "top".  In my case, I was doing pretty standard stuff - groupOfUniqueNames and inetOrgPerson.<br /><br />http://publib.boulder.ibm.com/infocenter/wpzosdoc/v6r1/index.jsp?topic=/com.ibm.wp.msg.doc/messages/com.ibm.wps.puma.resources.Messages.html<br /><br />https://www-304.ibm.com/support/docview.wss?uid=swg1PK80507

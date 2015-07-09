@@ -1,0 +1,15 @@
+---
+layout: post
+title: 'PostgreSQL on cygwin: "Bad system call"'
+date: '2004-12-22T21:02:00.000-05:00'
+author: Bill Schneider
+tags: 
+modified_time: '2004-12-22T21:07:23.256-05:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-110376764325457999
+blogger_orig_url: http://wrschneider.blogspot.com/2004/12/postgresql-on-cygwin-bad-system-call.html
+---
+
+I was getting this "Bad system call" message from PostgreSQL 7.4.x on cygwin.  It was working earlier, and I thought I had done everything right--cygserver was up and running, so I didn't know what was up.   ipcs gave the same error.
+<br />
+<br />Turns out I had forgot the magic word: "CYGWIN=server".  The first time I installed PostgreSQL (and read the docs), I had just set the var on the command line (CYGWIN=server pg_ctl start ...)  and never put it in my profile.  Easy enough to fix. 
+<br />

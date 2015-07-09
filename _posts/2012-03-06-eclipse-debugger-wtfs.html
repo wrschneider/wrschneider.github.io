@@ -1,0 +1,13 @@
+---
+layout: post
+title: Eclipse debugger WTFs
+date: '2012-03-06T12:30:00.004-05:00'
+author: Bill Schneider
+tags:
+- eclipse glassfish
+modified_time: '2012-03-06T13:04:26.752-05:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-1914722280132062843
+blogger_orig_url: http://wrschneider.blogspot.com/2012/03/eclipse-debugger-wtfs.html
+---
+
+Bug renders Eclipse debugger useless if class has/uses generics:<br />&nbsp;<a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=344856">https://bugs.eclipse.org/bugs/show_bug.cgi?id=344856</a><br /><br />Also, Eclipse Glassfish plugins are incapable of launching in debug mode unless the domain.xml is set up to use the default debug port (9009). &nbsp;if your domain.xml has been changed or customized, Eclipse will not be able to attach the debugger when launching the server in debug mode. &nbsp;Unfortunately, the "connection refused" doesn't give you much of a clue what's going on.<br /><br /><a href="http://stackoverflow.com/questions/8344454/oepe-glassfish-debug-connection-refused">http://stackoverflow.com/questions/8344454/oepe-glassfish-debug-connection-refused</a><br /><br />

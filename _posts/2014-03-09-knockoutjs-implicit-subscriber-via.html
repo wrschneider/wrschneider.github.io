@@ -1,0 +1,23 @@
+---
+layout: post
+title: 'KnockoutJS implicit subscriber via ko.computed: Elegant, yes.  Readable, maybe?'
+date: '2014-03-09T08:25:00.000-04:00'
+author: Bill Schneider
+tags: 
+modified_time: '2014-03-09T08:26:22.677-04:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-3162941208794565120
+blogger_orig_url: http://wrschneider.blogspot.com/2014/03/knockoutjs-implicit-subscriber-via.html
+---
+
+I have seen code that looks like this with KnockoutJS a few times, using a ko.computed as a substitute for ko.subscribe on multiple observables:
+{% highlight javascript %}
+this.x = ko.observable();
+this.y = ko.observable();
+this.updated = ko.observable(false);
+this.tracker = ko.computed(function() {
+  this.x();
+  this.y();
+  this.updated(true);
+}, this);
+{% endhighlight %}
+<br />The tracker function is equivalent to <br /><pre class="brush: javascript">var callback = function() {<br />  this.updated(true);<br />});<br /><br />this.x.subscribe(callback, this);<br />this.y.subscribe(callback, this);<br /></pre><br />The pattern with ko.computed is compact and elegant.  A single function tracks multiple observables, and fires an event when one of the tracked observables changes. <br /><br />My challenge with this pattern is the readability, though. &nbsp;A non-expert KnockoutJS user may have a hard time figuring out what's going on because the intent is not obvious from the code. &nbsp;The pattern is exactly the opposite of basic ko.observable usage. &nbsp;Simple cases like "fullName = firstName + lastName" use the tracked observables to calculate and return an output, and have no other side effect. &nbsp;In this case, the tracked observables' values aren't used, there is no output, and there are side effects. <br /><br />On the other hand, a KO expert who understands how ko.computed tracks observables might find this pattern is more readable than the alternative.<br /><br />So I'm thinking, it's ok to use this pattern, but with some conventions to help prevent beginners from getting too confused. &nbsp;Some thoughts:<br /><br /><ul><li>Use a naming convention to distinguish this ko.computed pattern from others. &nbsp;For example, onSomethingChanged or trackSomething. &nbsp;This way the name sounds like an event listener.&nbsp;</li><li>Don't mix the ko.computed patterns - either return a value or have a side effect, but not both</li><li>Within the ko.computed body, make a clear separation between setting up observable tracking and the action to fire when something changes. &nbsp;</li><li>Consider separating the code comments - this is one of those times when code comments are helpful to explain something that might not be obvious from the code itself.</li></ul><div>For example:</div><br /><pre class="brush: javascript">this.onInputChanged = ko.computed(function() {<br />  var trackedObservables = [this.x(), this.y()];<br />  // action when one of trackedObservables changes<br />  this.updated(true);<br />}, this);</pre><br /><br />KO documentation on computeds: <a href="http://knockoutjs.com/documentation/computedObservables.html">http://knockoutjs.com/documentation/computedObservables.html</a><br /><br />

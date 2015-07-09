@@ -1,0 +1,21 @@
+---
+layout: post
+title: 'PostgreSQL performance of "where exists" '
+date: '2004-12-15T22:34:00.000-05:00'
+author: Bill Schneider
+tags: 
+modified_time: '2004-12-15T23:56:11.886-05:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-110317254344413332
+blogger_orig_url: http://wrschneider.blogspot.com/2004/12/postgresql-performance-of-where-exists.html
+---
+
+Today I was looking into the performance of a PostgreSQL query with a "... where exists (select 1 from ...)" subquery:
+<br /><pre>select foo_id from foo
+<br />where exists (select 1 from bar where bar.foo_id = foo.foo_id)
+<br /></pre>I was surprised to find out that this query actually ran <i>faster</i> when I restructured it with a SELECT DISTINCT and a JOIN:
+<br /><pre>select distinct(foo_id) from bar
+<br />join foo on bar.foo_id=foo.foo_id
+<br /></pre>Some references on the web I've found suggest that EXISTS is the <a href="http://www.databasejournal.com/features/mssql/article.php/1438631">preferred way to write the above query in general</a>. Because it's a boolean condition, in theory the database needs to scroll fewer rows because it can stop as soon as the first match is found; and the DISTINCT can be expensive if the results from the join version would not have been unique.
+<br /><span style="text-decoration: underline;">
+<br /></span>An <a href="http://archives.postgresql.org/pgsql-general/2001-02/msg00667.php">ancient PostgreSQL mailing list post</a> indicates that rewriting the query as a JOIN may be faster than EXISTS in PostgreSQL, because the join can take advantage of indexes while EXISTS does a nested loop. But, then again, I'm still using PostgreSQL 7.3.x, and EXISTS handling may well have been improved in 7.4.
+<br />

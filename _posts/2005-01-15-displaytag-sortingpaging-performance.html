@@ -1,0 +1,26 @@
+---
+layout: post
+title: displaytag sorting/paging performance vs. native SQL
+date: '2005-01-15T07:55:00.000-05:00'
+author: Bill Schneider
+tags: 
+modified_time: '2005-01-15T08:07:02.296-05:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-110579412277236329
+blogger_orig_url: http://wrschneider.blogspot.com/2005/01/displaytag-sortingpaging-performance.html
+---
+
+displaytag is an easy-to-use JSP tag library for printing out HTML data tables with sorting and paging. But, there's a catch. In an enterprise application, collections are the result of some database query, so implementing sorting and paging entirely within the presentation layer is not going to be as efficient as doing both natively in the database with ORDER BY, LIMIT and OFFSET (assume PostgreSQL syntax). Instead, displaytag expects the entire collection to be in memory, displaying only the necessary ones, and sorting the Java collection itself.
+<br />
+<br />I ran some tests to see exactly how much this affects performance. On a non-scientific test (YMMV) with a 250 row result set, sorting with displaytag added an 34% overhead over a native ORDER BY. There was a much more dramatic difference for paging, though. On a test where I loaded 250 rows from the DB and displayed only 25 (pagesize=25), displaytag took 141% longer on average than a "LIMIT 25" which only returns the 25 rows to actually be displayed. The overhead factor will scale with the total number of rows in the original, unlimited query.
+<br />
+<br />So, displaytag clearly is not as efficient as sorting and paging in native SQL. But is it enough of a difference to matter? Well, it depends on your application--it's a classic tradeoff between performance and elegant design.  Separation of concerns says paging results <em>conceptually</em> belongs in the presentation layer; in a layered J2EE application, you can push sorting/paging down through the business and persistence layers, but it isn't pretty.
+<br />
+<br />My personal opinion, though, is that performance normally shouldn't be enough of a factor to dissuade you from using displaytag for sorting/paging results. If your query returns so many rows that you can't afford the overhead from the undisplayed rows, then you may not be thinking about paging the right way--paging should be thought of as purely a UI layer construct to save the user from scrolling or downloading a large HTML document, not to save the database from working too hard. How meaningful is it to jump from page 1 to page 47 out of 62 anyway? If your query returns more than, say, 300 rows (15 pages with 20 rows each), you probably should think about making the user provide additional search criteria first rather than blindly paging the output.
+<br />
+<br />What about the other option--coupling the presentation layer directly to the database? It's easy to imagine an extension to displaytag that takes a SQL query rather than a Java collection, and handles sorting/paging natively by dynamically appending ORDER BY and LIMIT/OFFSET clauses. (Indeed, the MS toolset seems to actively encourage this pattern.)
+<br />
+<br />This is fine for prototyping or simple apps that don't have much business logic beyond the basic CRUD transactions. But, this can rapidly become unmaintainable--not only are there many more places to touch if the DB schema changes, but you are also at risk of introducing bugs by accessing tables directly and potentially bypassing domain logic (business rules) tied to particular fields. Still, it may be worth considering tihs as a strategy for hand-optimizing queries with special performance requirements that outweigh maintainability, especially if the query is more relational than object-oriented in nature.
+<br />
+<br />In summary, displaytag is a good, simple choice for many applications that need HTML tables with sorting and paging. There may be a performance hit, but a clean, maintainable design often is more
+<br />important.    
+<br />

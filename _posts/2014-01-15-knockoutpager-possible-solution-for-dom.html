@@ -1,0 +1,12 @@
+---
+layout: post
+title: knockout/pager - possible solution for DOM teardown
+date: '2014-01-15T22:03:00.003-05:00'
+author: Bill Schneider
+tags: 
+modified_time: '2014-01-15T22:03:51.809-05:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-7577031381990620886
+blogger_orig_url: http://wrschneider.blogspot.com/2014/01/knockoutpager-possible-solution-for-dom.html
+---
+
+Possible solution to DOM leakage issue with PagerJS as I observed previously (<a href="http://wrschneider.blogspot.com/2013/12/knockoutjs-is-great-not-so-sure-about.html">Knockout is great, not sure about pager)</a>:<br /><br />Add an afterHide event handler to tear down DOM after you leave for another page. &nbsp;This handler can wipe the DOM from the template, triggering any cleanup registered with ko.utils.domNodeDisposal (see&nbsp;<a href="http://stackoverflow.com/questions/10324240/knockout-binding-handler-teardown-function">this post on StackOverflow</a>). <br /><br />Also, by clearing the reference to the view model within the Page object, the view model <i>may&nbsp;</i>be garbage-collected. &nbsp; This should work for both lazy and non-lazy bindings: for lazy bindings, only the Page object would have a reference to the view model. &nbsp;For non-lazy, someone else passed a reference to an existing view model so the view model will hang around.<br /><br />You could attach this callback globally or within individual page bindings.<br /><br /><pre class="brush: js">var afterHideCallback = function afterHideCallback(event) {<br />  var elementToDestroy = event.page.element;<br />                     <br />  // clear out reference from the node with page binding so it can be garbage collected<br />  event.page.ctx = {};<br />                                  <br />  // shut down and wipe DOM from page to be hidden                     <br />  $(elementToDestroy).children().each(function destroyChildElement() {<br />    ko.removeNode(this);<br />  });<br />};<br /><br />// attach this event globally or in individual "page: {afterHide: ...}" bindings<br />pager.afterHide.add(afterHideCallback);<br /></pre>

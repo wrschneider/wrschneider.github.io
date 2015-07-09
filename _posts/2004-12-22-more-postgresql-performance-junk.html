@@ -1,0 +1,17 @@
+---
+layout: post
+title: more PostgreSQL performance junk
+date: '2004-12-22T21:07:00.000-05:00'
+author: Bill Schneider
+tags: 
+modified_time: '2004-12-22T21:17:37.410-05:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-110376825741051112
+blogger_orig_url: http://wrschneider.blogspot.com/2004/12/more-postgresql-performance-junk.html
+---
+
+Someone at work was running a big delete (100k rows) and it was taking forever, as if it were hung.  We couldn't figure out what was going on, and there was clearly a non-linear effect: smaller deletes on 10k rows were completing very fast, less than 5 sec, while 100k rows was still running after 20 mins. 
+<br />
+<br />We think the big delete was taking so long because PostgreSQL may try to keep a rollback buffer for the whole delete operation in memory or something like that, causing thrashing or something like that.   I haven't tried this on Oracle, but I'm guessing that it and other databases may be smarter about managing their physical storage directly (RAM vs disk) rather than relying on the underlying OS. 
+<br />
+<br />but then again, if you're touching 100k rows at once, probably not a bad idea to commit every so often anyway, so as to avoid a long-running transaction that could potentially hose other users.
+<br />

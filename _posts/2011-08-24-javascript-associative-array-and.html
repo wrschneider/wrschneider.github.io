@@ -1,0 +1,26 @@
+---
+layout: post
+title: Javascript associative array and iteration order
+date: '2011-08-24T09:31:00.000-04:00'
+author: Bill Schneider
+tags: 
+modified_time: '2011-08-24T09:31:06.591-04:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-2739718696717629661
+blogger_orig_url: http://wrschneider.blogspot.com/2011/08/javascript-associative-array-and.html
+---
+
+I just noticed that some browsers, like IE9 and Chrome, don't preserve insertion order of keys when iterating with a for-in loop ["for (key in array)"].  Although technically Javascript never guaranteed preserving order in a for-in loop, so many popular browsers did anyway that I was taken by surprise.<br /><br />The Chrome behavior is especially odd - it preserves order of insertion for non-numeric keys, but iterates numeric keys in numeric order first.  It also coerces numeric strings to numbers.<br /><br />This code example illustrates<br /><br /><pre class="brush:js">var foo=new Object();
+<br />
+<br />foo["111_"] = 1;
+<br />foo["222_"] = 2;
+<br />foo["333_"] = 3;
+<br />foo["444"] = 4;
+<br />foo["555"] = 5;
+<br />foo["666"] = 6;
+<br />
+<br />var str = "";
+<br />for (var key in foo) { 
+<br />  str = str + foo[key] + " ";
+<br />}
+<br />document.write(str);
+<br /></pre><br />In Chrome this prints "4 5 6 1 2 3".  In IE 7, IE 8, and Firefox, it prints "1 2 3 4 5 6".<br /><br />This behavior (particularly the coercion of numeric strings) has been tracked as a bug in Chrome - but unclear whether it will ever be fixed<br /><a href="http://code.google.com/p/chromium/issues/detail?id=37404">http://code.google.com/p/chromium/issues/detail?id=37404</a><br /><br />ECMAScript spec says "order of enumerating... is not defined"<br /><a href="http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf">http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf</a><br /><br />

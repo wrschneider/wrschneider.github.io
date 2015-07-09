@@ -1,0 +1,12 @@
+---
+layout: post
+title: KnockoutJS is great, not so sure about PagerJS
+date: '2013-12-04T23:00:00.000-05:00'
+author: Bill Schneider
+tags: 
+modified_time: '2013-12-04T23:00:54.144-05:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-7395609528874168213
+blogger_orig_url: http://wrschneider.blogspot.com/2013/12/knockoutjs-is-great-not-so-sure-about.html
+---
+
+I've been using KnockoutJS for a while and I like it. &nbsp;Knockout solves a clear need for me, in that without it or something similar, I'd have a mess of jQuery event handlers that breaks every time my HTML markup changes. &nbsp;And because Knockout <i>only</i>&nbsp;solves for data binding, it is simple and easy to learn. It was easy to learn after using JSF on the server, with a similar two-way binding model. &nbsp;I imagine .NET developers would have a similar transition from XAML, WPF, etc. <br /><br />The one thing I am not as happy with was extending Knockout with PagerJS for client-side routing. &nbsp;Although it's easy to get started with Pager, it doesn't seem to work well with the use case where only one page is active at a time and each page has its own isolated view model. &nbsp;Pager does have mechanisms to lazy fetch templates and bind view models when a page becomes active, but the DOM and the view model don't go away when you move to another page. <br /><br />This might be ok for some use cases like master/detail, or tabbed navigation on a single page. &nbsp;But it seems like the growing memory footprint will cause problems when the DOM and view models for multiple independent pages are all in scope when they don't need to be. <br /><br />Ideally there would be some way to dispose view models and DOM whenever we leave one page for another.

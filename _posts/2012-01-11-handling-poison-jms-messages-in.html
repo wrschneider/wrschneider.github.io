@@ -1,0 +1,19 @@
+---
+layout: post
+title: Handling poison JMS messages in Glassfish - infinite loop WTF?
+date: '2012-01-11T21:22:00.000-05:00'
+author: Bill Schneider
+tags:
+- java
+- ejb
+- mdb
+- jta
+- jms
+- j2ee
+- glassfish
+modified_time: '2012-01-15T21:28:40.024-05:00'
+blogger_id: tag:blogger.com,1999:blog-9159309.post-3480892172530070623
+blogger_orig_url: http://wrschneider.blogspot.com/2012/01/handling-poison-jms-messages-in.html
+---
+
+I found this post useful for understanding problems with handling "poison messages" in message-driven beans:<br /><br /><a href="http://weblogs.java.net/blog/felipegaucho/archive/2009/09/24/handling-poison-messages-glassfish">http://weblogs.java.net/blog/felipegaucho/archive/2009/09/24/handling-poison-messages-glassfish</a><br /><br />The gist of it is that even if you think you caught an exception, your transaction still might roll back and cause the JMS message to be re-delivered. &nbsp;(The MDB is an EJB, which will default to container-managed transactions, equivalent to having REQUIRED on each method.)<br /><br />There are two small caveats to add:<br /><br />1. The specific issue with JPA is that certain persistence exceptions mark the transaction for rollback, even if the exception is actually caught. &nbsp;It matters not whether that JPA activity is happening directly in onMessage() or in a "sub-transaction".<br /><br />2. Simply annotating another method in the same MDB with @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW) does <i>not </i>actually create a separate transaction context. &nbsp;If you are calling a method locally within the same EJB, "this" refers to the object itself, while the transaction behavior lives in the EJB proxy wrapper. &nbsp;(See&nbsp;<a href="http://stackoverflow.com/questions/427452/ejb-transactions-in-local-method-calls">http://stackoverflow.com/questions/427452/ejb-transactions-in-local-method-calls</a>) &nbsp;So you actually have to put this transaction in a separate EJB and inject it into the MDB with @Inject or @EJB annotations.<br /><br />And now for the "WTF" part.<br /><br />The thing that really surprised me is the retry behavior. &nbsp;If the MDB throws an exception, and the transaction rolls back as a result, Glassfish recognizes that there was an exception and will only re-deliver the message once. &nbsp;There is some setting somewhere that controls how many retries are attempted, I believe. &nbsp;(Haven't found it.)<br /><br />If you catch an exception that marked the transaction for rollback (or the transaction was marked for rollback programmatically), the transaction still rolls back, and the message is redelivered. &nbsp;However, the rollback without exception does <i>not </i>fire Glassfish's retry counter, so you end up in an infinite loop.<br /><br />Either way the solution is the same, but still -WTF!
