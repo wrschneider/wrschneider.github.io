@@ -3,7 +3,7 @@ layout: post
 title: Node.js with SQL Server
 ---
 
-Yes, you can use SQL Server with Node.js.  I added a [Gist](https://gist.github.com/wrschneider/edaa6cbb4ff39d4bcfa8.js) to show how it could work.  I didn't 
+Yes, you can use SQL Server with Node.js.  I added a [Gist](https://gist.github.com/wrschneider/edaa6cbb4ff39d4bcfa8) to show how it could work.  I didn't 
 get to connection pooling or transactions, just enough to get a general feel.
 
 I'm not convinced that SQL (or an RDBMS in general) is the best persistent store for Node. 
