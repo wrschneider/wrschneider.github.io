@@ -25,6 +25,6 @@ the tech industry, but that's another topic altogether.)
 One other advantage for DC: the cost of living in the Bay Area is so high that it makes DC look affordable by comparison.  When it comes to recruiting and retention, in DC you're less 
 likely to end up on the losing end of a bidding war with Google and Facebook.
 
-DC may not ever be another Silicon Valley, but it's not just because don't have an MIT or Stanford next door.  Instead, I feel like it's a simple feedback loop--Silicon Valley
+DC may not ever be another Silicon Valley, but it's not just because we don't have an MIT or Stanford next door.  Instead, I feel like it's a simple feedback loop--Silicon Valley
 has an advantage because it's already Silicon Valley, with all the infrastructure that goes with it (venture capital, lots of engineers already live there, a critical mass of established 
 businesses that create new spin-offs), and everyone else isn't.  Universities are just one piece of that overall ecosystem.  Just like New York and finance, or L.A. and movies.
