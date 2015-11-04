@@ -14,7 +14,7 @@ If you use the right frameworks the right way, your project may scream "Spring!"
 boilerplate code, which makes it possible for your project to scream "Accounting system!" at the same time.  The key is to choose and leverage frameworks that make your domain
 logic stand out, rather than obscure it, and to accept that trying to hide the frameworks might be counterproductive. 
 
-How does that trsanslate in practice?  If I'm writing an ASP.NET application with Entity Framework and Angular, my application is going to look like I'm using all those
+How does that translate in practice?  If I'm writing an ASP.NET application with Entity Framework and Angular, my application is going to look like I'm using all those
 frameworks, but I'm going to use them in a way that my domain logic is still clear and at least somewhat framework-agnostic.  The sweet spot I've 
 found with both Spring and ASP.NET is something like:
 
