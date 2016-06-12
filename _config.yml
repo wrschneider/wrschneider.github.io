@@ -3,12 +3,13 @@ description: where I write about software engineering.  All opinions are my own
 meta_description: "Bill Schneider's blog"
 
 markdown: redcarpet
-highlighter: pygments
+highlighter: rouge
 logo: false
 paginate: 15
 baseurl: /
 domain_name: 'http://wrschneider.github.io'
 google_analytics: 'UA-64845005-1'
+gems: [jekyll-paginate]
 
 # Details for the RSS feed generator
 url:            'http://wrschneider.github.io'
