@@ -13,3 +13,10 @@ gems: [jekyll-paginate]
 # Details for the RSS feed generator
 url:            'http://wrschneider.github.io'
 author:         'Bill Schneider'
+
+defaults:
+  -
+    scope:
+      path: ""
+    values:
+      disqus: true
