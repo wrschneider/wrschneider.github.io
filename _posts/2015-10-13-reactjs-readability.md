@@ -49,7 +49,7 @@ readability was such a disaster, that this was addresed over time by moving clos
 all JSP's problems, though, it was better than the other options like generating your HTML with `out.println` or instantiating Java objects for each DOM element.  So
 forgive me for thinking that JSX feels like a step backwards.
 
-This does not take away from the other cool ideas in React -- that it's a simple, view-only framework, and that you can re-rendering everything with good performance through 
+This does not take away from the other cool ideas in React -- that it's a simple, view-only framework, and that you can re-render everything with good performance through 
 virtual DOM diffing.  Still, readability matters, and there's at least one framework out there ([Riot.js](http://riotjs.com)) that shows that the good ideas in React are not 
 mutually exclusive with readability.  Besides, if JSX just compiles to Javascript, why is it too much to ask for a `<foreach>` tag that hides the `list.map(function(item)...` 
 syntax?  I'm even OK with having JSX/HTML in the same file as the rest of the component Javascript, like Riot.js does, as long as you don't have to jump back and forth between 
