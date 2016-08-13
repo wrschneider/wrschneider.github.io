@@ -3,7 +3,7 @@ layout: post
 title: React, ES6 and JSX readability
 ---
 
-Previously I complained about [React and JSX readability]({% post_url 2015-10-13-react-readability %}). I was unhappy with something like this:
+Previously I complained about [React and JSX readability]({% post_url 2015-10-13-reactjs-readability %}). I was unhappy with something like this:
 
 ```
 return (
@@ -19,6 +19,7 @@ return (
 
 But if you rewrite it with arrow functions, it's not as bad:
 
+```
 return (
   <ul>
   {list.map(item =>  
