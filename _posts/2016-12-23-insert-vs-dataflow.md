@@ -1,6 +1,6 @@
 ---
 layout: post
-title: SSIS data flow vs. insert/select
+title: SSIS data flow vs. insert-select
 ---
 
 To transform data within a single SQL Server, with source and target data in the same database, it is probably faster to use an `INSERT` statement than a SSIS data flow task.
