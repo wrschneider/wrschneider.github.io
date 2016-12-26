@@ -26,7 +26,7 @@ separate builds/repos, but this does not always make sense.  This only works
 if you can divide your repo  along clear domain boundaries, which assumes you
 know your domain well enough to get those boundaries right ([which is the
 problem with doing microservices too eagerly]({% post_url
-2015-11-11-microservices.md %}));  *and* your teams are aligned with those
+2015-11-11-microservices %}));  *and* your teams are aligned with those
 module boundaries.  In many cases, teams and their backlogs are fluid such
 that there is no clear mapping between teams and repos.
 
