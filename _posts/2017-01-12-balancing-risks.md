@@ -1,3 +1,8 @@
+---
+layout: post
+title: Balancing early and later project risks
+---
+
 One of the things I liked about this post on ["Senior Engineers Reduce Risk"](https://hackernoon.com/senior-engineers-reduce-risk-5ab2adc13c97#.9brfu91rj) is how it called out two different kinds of project risks:
 
 -   Early in a project lifecycle, the biggest risk is building the wrong thing
