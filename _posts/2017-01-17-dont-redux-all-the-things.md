@@ -61,13 +61,12 @@ const counterReducer = (counter = 0, action) => {
 }
 ```
 
-My question is, why is this better?  Now, when I look at the component it's not clear what `increment` does because it's passed in as a prop.  When I go look at the injected prop, 
-that still doesn't tell me what actually happens when you click the button--it dispatches an action, which is like publishing a message.  Then you have to go look at the reducer separately
-to see what happens to the state when the action is received.
+Now, when I look at the component it's not immediately obvious what `increment` does because it's passed in as a prop.  When I go look at the injected prop, 
+that still doesn't tell me what happens when you click the button--`increment` dispatches an action, which is like publishing a message.  You have to go look at the reducer separately
+to see what happens to the state when the action is received.  Why should I consider the Redux version an improvement?
 
-My point is not that Redux is bad, only that it doesn't necessarily add value in every use case, especially if you're not using React for view components but not building a true 
-SPA.  Also, the Redux docs don't have a good explanation of why a particular use case would be harder or more complex without Redux, or how to tell the difference between when you want to 
-use it and when you don't.
+My point is not that Redux is bad, only that it doesn't necessarily add value in every use case, especially if you're using React for reusable view components without
+building a true full-blown SPA.  Also, the Redux docs don't have a good explanation of why a particular use case would be harder or more complex without Redux, or how to tell the difference between when it will add value and when it won't.
 
 So, when to use Redux?  Let's hear what one of the original React creators has to say:
 
@@ -76,5 +75,5 @@ So, when to use Redux?  Let's hear what one of the original React creators has t
 
 It's debatable whether Redux is a Flux implementation, but it fills the same niche of state management.  
 
-Another good rule of thumb is "do whatever is less awkward."  So don't rush to Redux All The Things.  Instead, introduce Redux gradually, when it solves a specific 
+Another good rule of thumb is "do whatever is less awkward."  Don't rush to Redux All The Things.  Instead, introduce Redux gradually, when it solves a specific 
 problem--you can even mix local state and Redux on the same component.
