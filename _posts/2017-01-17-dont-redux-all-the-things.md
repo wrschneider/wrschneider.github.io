@@ -75,5 +75,5 @@ So, when to use Redux?  Let's hear what one of the original React creators has t
 
 It's debatable whether Redux is a Flux implementation, but it fills the same niche of state management.  
 
-Another good rule of thumb is "do whatever is less awkward."  Don't rush to Redux All The Things.  Instead, introduce Redux gradually, when it solves a specific 
-problem--you can even mix local state and Redux on the same component.
+Another good rule of thumb is ["do whatever is less awkward."](https://github.com/reactjs/redux/issues/1287)  Don't rush to Redux All The
+ Things.  Instead, introduce Redux gradually, when it solves a specific problem--you can even mix local state and Redux on the same component.
