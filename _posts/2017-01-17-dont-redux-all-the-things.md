@@ -4,7 +4,7 @@ title: Don't Redux All The Things
 ---
 
 Redux is a library and a pattern for managing state in front-end applications.  It is typically associated with React but it can be used with other frameworks as well.
-instead of directly modifying state, components dispatch actions, which are then handled by reducers.  Reducers take current (immutable) state plus the action to produce a new state.  The new state is then wired into React component properties, which triggers re-rendering.  This interaction is shown in the diagram below:
+Instead of directly modifying state, components dispatch actions, which are then handled by reducers.  Reducers take current (immutable) state plus the action to produce a new state.  The new state is then wired into React component properties, which triggers re-rendering.  This interaction is shown in the diagram below:
 
 ![diagram of Redux flow](https://cdn-images-1.medium.com/max/800/1*MKL1Im4ElgB38_MsubiMjw.png)
 
