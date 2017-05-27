@@ -6,7 +6,7 @@ title: Pragmatic Functional Programming
 I am not passionate about functional programming for its own sake.  I am passionate about readability and clean code, and functional programming is a tool 
 to help get there.  I take a pragmatic approach: functional programming should be a tool in your toolbox, and you should be ready to
 use when it makes your life easier.  At the same time, I don't feel a rush to Pure Function and Immutable All The Things.  I like languages that
-support functional programming but don't strictly always require it.
+support functional programming but don't strictly require it.
 
 The patterns I use most frequently fall in the filter-map-reduce category (it's not just for big data!)  One way of looking at this as 
 applying the DRY principle to common combinations of loops and conditionals.  For example, you may find yourself copy-pasting loops like this frequently (C#)
