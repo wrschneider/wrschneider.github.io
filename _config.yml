@@ -8,12 +8,14 @@ paginate: 15
 baseurl: /
 domain_name: 'http://wrschneider.github.io'
 google_analytics: 'UA-64845005-1'
-gems: [jekyll-paginate, jekyll-feed]
+gems: [jekyll-paginate, jekyll-feed, jekyll-github-metadata]
 
 # Details for the RSS feed generator
 url:            'http://wrschneider.github.io'
 author:         'Bill Schneider'
 
+repository: wrschneider/wrschneider.github.io
+github: [metadata]
 defaults:
   -
     scope:
