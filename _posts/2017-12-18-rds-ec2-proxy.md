@@ -10,7 +10,8 @@ connect to RDS by hostname, and AWS magically updates the hostname to point at t
 active host. 
 
 The only time this creates a challenge is when you want to connect to RDS from 
-a private/corporate network and have to update firewall or VPN tunnel configuration to allow connections to RDS.
+a private/corporate network and have to update firewall or VPN tunnel configuration to allow connections to 
+RDS. If this isn't an issue for you, you can stop reading this.
 
 The problem is firewall rules, VPN tunnels, and NAT rules all work on IP addresses, not hostnames.  You can't
 configure your firewall to unblock traffic to an RDS instance if you don't know its IP address.  
