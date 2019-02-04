@@ -1,24 +1,51 @@
-name: Bill Schneider
+title: Bill Schneider
 description: where I write about software engineering.  All opinions are my own
 meta_description: "Bill Schneider's blog"
 
-highlighter: rouge
 logo: false
 paginate: 15
-baseurl: /
+baseurl: ""
 domain_name: 'http://wrschneider.github.io'
 google_analytics: 'UA-64845005-1'
-gems: [jekyll-paginate, jekyll-feed, jekyll-github-metadata]
+theme: jekyll-theme-cayman
 
 # Details for the RSS feed generator
 url:            'http://wrschneider.github.io'
 author:         'Bill Schneider'
+disqus: billschneideronsoftware
 
 repository: wrschneider/wrschneider.github.io
 github: [metadata]
-defaults:
-  -
-    scope:
-      path: ""
-    values:
-      disqus: true
+footer-links:
+  github: wrschneider
+  linkedin: wrschneider
+  stackoverflow: users/836318/wrschneider
+
+# Jekyll 3 now only supports Kramdown for Markdown
+kramdown:
+  # Use GitHub flavored markdown, including triple backtick fenced code blocks
+  input: GFM
+  # Jekyll 3 and GitHub Pages now only support rouge for syntax highlighting
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    # Use existing pygments syntax highlighting css
+    css_class: 'highlight'
+
+# Set the Sass partials directory, as we're using @imports
+sass:
+  style: :expanded # You might prefer to minify using :compressed
+
+# Use the following plug-ins
+plugins:
+  - jekyll-sitemap # Create a sitemap using the official Jekyll sitemap gem
+  - jekyll-feed # Create an Atom feed using the official Jekyll feed gem
+  - jekyll-paginate
+  - jekyll-github-metadata
+
+# Exclude these files from your production _site
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - LICENSE
+  - README.md
+  - CNAME
