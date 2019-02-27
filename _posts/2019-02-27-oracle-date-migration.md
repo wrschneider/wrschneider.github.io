@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Migrating DATE columns from Oracle to Redshift
+description: how to decide what DATE columns in Oracle should stay
+  DATE vs. TIMESTAMP when migrating to Redshift 
 ---
 
 Oracle's `DATE` type is both a date and a time down to the second level.
