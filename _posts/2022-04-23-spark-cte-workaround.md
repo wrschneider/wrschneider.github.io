@@ -35,14 +35,14 @@ For example if you start with
 
 you would end up with 
 
-| child | ancestor |
-|-----|------|
+| child | ancestor |column2|column3|
+|-----|------|-------|-------|
 | 1 | null |A|X|
 | 2 | 1 |B|Y|
 | 2 | null | A|X|
 | 3 | 2 |C|Z|
 | 3 | 1 |B|Y|
-| 3 | null || A|X|
+| 3 | null | A|X|
 
 Each non-root record is duplicated for every ancestor it has in the tree, inheriting the other columns (column2, column3) from ancestors.
 
