@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Spark encoders and implicits
+title: Spark encoders, implicits and custom encoders
 description: Understanding how Spark converts rows into Scala case classes
 tags: spark
 ---
@@ -16,7 +16,7 @@ case class Foo(a: Int, b: String)
 spark.sql("select a, b from table").as[Foo].map(foo => Foo(foo.a + 1, foo.b))
 ```
 
-the call to `map` will trigger Spark to convert its internal rows into instances of case classes, using an encoder
+the call to `map` will trigger Spark to convert its internal rows into instances of case classes, using an encoder.
 
 The above call will actually fail to compile unless you import `spark.implicits._`.  One of the implicits defined is an encoder that 
 can convert any Scala `Product` type (such as a case class) into internal rows and back, in addition to primitive types like
@@ -35,8 +35,7 @@ Some points of caution:
 - `df.map((r: Row) => r)` will not work even if you import `spark.implicits._`.  This is because you need the `RowEncoder` that translates Spark internal rows to and from `Row`, but this encoder needs the dataframe's schema.  You would have to provide the
 `RowEncoder` explicitly like, `df.map((r: Row) => r)(df.encoder)`
 
-- The `udf` function does not allow you to specify explicit encoders, so a UDF like `udf { (r: Row) => ... }` works some other 
-way.  It looks like instead, 
+- The `udf` function does not allow you to specify explicit encoders, and a UDF like `udf { (r: Row) => ... }` must work some other way.  It looks like instead, 
 [when there is no encoder available, Spark UDFs will try to explicitly convert](https://github.com/apache/spark/blob/295e98d29b34e2b472c375608b8782c3b9189444/sql/catalyst/src/main/scala/org/apache/spark/sql/catalyst/expressions/ScalaUDF.scala#L168) 
 the `StructType` of the argument in the row, to a Scala `Row` object.
 
@@ -114,7 +113,7 @@ Notes:
 
 * The encoder contains both a serializer and deserializer.  The serializer turns Scala objects into Spark internal objects, 
 while the deserializer turns Spark internal objects into Scala objects.
-* You can either pass `encoder` as an explicit argument (`df.as[Foo](encoder)`), or define it as implicit
+* You can either pass `encoder` as an explicit argument (`df.as[Foo](encoder)`), or define it as implicit.
 * `Invoke`, `NewInstance`, `InitializeJavaBean` etc. are *expressions* that result in generated code, that will compile and then 
 run on each individual worker node as part of a query plan.  Effectively, you are building an expression tree that will drive
 code generation.  Similarly, the `inputObject` is not the actual input data, but rather an expression that will result in generated code that evaluates to the input data.
