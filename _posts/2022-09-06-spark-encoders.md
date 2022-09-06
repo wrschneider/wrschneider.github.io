@@ -51,9 +51,9 @@ spark.sql("select a from table").as[Foo].first()
 ```
 
 Now, what happens if you want to have objects in a Dataset that are not covered by an existing encoder, for example a class 
-that isn't a case class, or a Java object that doesn't follow bean conventions?
-
-It is possible to write your own encoder.
+that isn't a case class, or a Java object that doesn't follow bean conventions? The
+[HAPI FHIR Java classes](https://hapifhir.io/hapi-fhir/docs/appendix/javadocs.html) are one such 
+example.  In this case, it is possible to write your own encoder.
 
 Example of non-conforming class definition (intentionally bad code for illustration purposes):
 
