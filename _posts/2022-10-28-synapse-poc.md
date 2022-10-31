@@ -1,3 +1,9 @@
+---
+layout: post
+title: Synapse POC and comparison with Azure Databricks
+description: Observations from a brief POC comparing Synapse and Databricks on Azure
+---
+
 I took a look at Azure Synapse and compared it against Azure Databricks.  
 
 *I am sharing some personal observations from a brief POC, and this is not to be construed as a recommendation or endorsement for either product.*
