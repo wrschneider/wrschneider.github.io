@@ -26,7 +26,7 @@ this:
   "identities": [
     {
       "username": "username",
-      "customData": "value", // optional, see
+      "customData": "value", // optional, see below
       "roles": [
         "rolename"
       ],
