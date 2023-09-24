@@ -105,4 +105,5 @@ So this is only a good solution for hierarchies that are wide but not deep -- to
 records to fit into memory, but not too many levels of recursion. 
 
 Also, this could be worked around with caching, persistence or checkpoints, to prevent
-re-execution of intermediate results for checking counts.
+re-execution of intermediate results for checking counts.  It looks like the 
+[PR for adding Recursive CTE support to Spark](https://github.com/apache/spark/pull/40744) does exactly that and would make the caching mechanism configurable.
