@@ -4,7 +4,7 @@ title: More Spark workarounds for recursive CTEs
 description: Spark does not have support for recursive CTEs, so some workarounds are necessary
 ---
 
-I previously wrote about the [lack of recursive CTEs in Spark SQL](2022-04-23-spark-cte-workaround.md) for parent/child hierarchies.
+I previously wrote about the [lack of recursive CTEs in Spark SQL]({{ site.baseurl }}{% link 2022-04-23-spark-cte-workaround.md %}) for parent/child hierarchies.
 
 This may be addressed in a [future update to Spark](https://github.com/apache/spark/pull/40744).
 
@@ -13,7 +13,7 @@ In the meantime there are workarounds:
 - Pull the parent/child lookup into an in-memory collection, and unroll the hierarchy in regular Scala or Python code
 - Use Scala or Python recursion to build up the equivalent recursive joins/unions in Spark SQL
 
-My [previous article](2022-04-23-spark-cte-workaround.md) gave an example of how to unroll a hierarchy in Scala.
+My [previous article]({{ site.baseurl }}{% link 2022-04-23-spark-cte-workaround.md %}) gave an example of how to unroll a hierarchy in Scala.
 
 I found a more succinct way to do this with the help of Github co-pilot:
 
