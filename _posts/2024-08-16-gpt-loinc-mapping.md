@@ -41,5 +41,5 @@ example results as illustration.  A human expert will then have to validate and 
 Copilot.
 
 Generative AI will make human experts more efficient and productive, effectively giving them a mega-autocomplete, but AI cannot replace
-human experts.  Rather, AI is more like a non-expert that does a web search, eyeballs the results a copy-pastes the most likely 
+human experts.  Rather, AI is more like a non-expert that does a web search, eyeballs the results and copy-pastes the most likely 
 answer. Thus AI output must be treated like a first draft rather than a final word.
