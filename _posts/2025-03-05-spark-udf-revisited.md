@@ -37,8 +37,8 @@ processing one record in a group requires tracking state over how the other reco
   
 Some examples of complex business logic that justifies a UDF:
 
-* Pairing up rows in a transaction ledger where positive/negative amounts cancel each other out.  Doing this in Python, Scala or Java code  
-on a list of objects is straightforward.  (I could imagine it as a Leetcode-style interview question.) Doing this in SQL would be tricky, because you have to  
+* Pairing up rows in a transaction ledger where positive/negative amounts cancel each other out.  Doing this in Python, Scala or Java code
+on a list of objects is straightforward.  (I could imagine it as a Leetcode-style interview question.) Doing this in SQL would be tricky, because you have to
 keep track of whether a given record was already paired with another to prevent using it again.
 
 * Clinical quality measures, where you have different measures with different criteria that would translate to combinations of `exists`/`not exists`
