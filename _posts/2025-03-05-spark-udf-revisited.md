@@ -8,7 +8,7 @@ tags: [spark, udf, big-data, data-processing]
 author: wschnei2
 ---
 
-A while back I wrote about [some of the caveats of using UDFs](./2023-05-23-spark-udf-issues.md).
+A while back I wrote about [some of the caveats of using UDFs](https://wrschneider.github.io/2023/05/23/spark-udf-issues.html).
 
 Beyond the concerns about null handling and performance, there are a few additional points to keep in mind:
 
