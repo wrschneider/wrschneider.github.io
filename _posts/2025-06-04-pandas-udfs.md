@@ -6,8 +6,9 @@ date: 2025-06-04
 categories: [Apache Spark, Pandas, UDFs]
 tags: [spark, pyspark, pandas, udf, big data]
 author: "wrschneider"
+description: investigating usage and performance of Python UDFs in Spark with Pandas 
 ---
-One of the reasons I've preferred Scala for working with Spark, is the ability to define complex logic in a UDF without as big of a performance penalty as Python UDFs.  (Aside from the [performance risk of UDFs in general](../2025-05-23-udf-performance.md).)
+One of the reasons I've preferred Scala for working with Spark, is the ability to define complex logic in a UDF without as big of a performance penalty as Python UDFs.  (Aside from the [performance risk of UDFs in general]({% post_url 2025-05-23-spark-performance %}).)
 
 That changed when [`pandas_udf`](https://spark.apache.org/docs/3.5.6/api/python/reference/pyspark.sql/api/pyspark.sql.functions.pandas_udf.html) 
 was introduced.  There is still overhead of calling the Python interpreter from the JVM rather than executing the UDF
