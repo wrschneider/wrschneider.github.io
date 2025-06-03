@@ -2,7 +2,7 @@
 layout: post
 title: "Pandas UDFs in Apache Spark"
 date: 2025-06-03
-categories: [spark, pyspark, pandas]
+categories: [spark]
 tags: [spark, pyspark, pandas, udf, big data]
 author: "wrschneider"
 description: investigating usage and performance of Python UDFs in Spark with Pandas 
