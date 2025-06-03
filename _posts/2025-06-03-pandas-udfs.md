@@ -1,8 +1,7 @@
 ---
 layout: post
-date: 2025-06-04
 title: "Pandas UDFs in Apache Spark"
-date: 2025-06-04
+date: 2025-06-03
 categories: [Apache Spark, Pandas, UDFs]
 tags: [spark, pyspark, pandas, udf, big data]
 author: "wrschneider"
