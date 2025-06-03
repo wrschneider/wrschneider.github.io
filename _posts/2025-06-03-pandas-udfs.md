@@ -46,8 +46,8 @@ def ordinary_python_udf(row):
 This will incur overhead of serializing every row to the Python interpreter individually.
 
 String concatenation is simple enough that it can be done with native, vectorized Pandas operations, which will be much faster than
-the first pass above.  Note that the `struct` type, which can translate to either a `Row` or case class in Scala UDFs, translates to a Pandas `DataFrame`, and
-the return type will be a Pandas `Series`, analogous to a Spark `Column`:
+the first pass above.  Note that the `struct` type, which can translate to either a `Row` or case class in Scala UDFs, translates to a Pandas 
+`DataFrame`.  The return type will be a Pandas `Series`, analogous to a Spark `Column`:
 
 ```python
 import pandas as pd
@@ -69,14 +69,14 @@ def pandas_apply_udf(df: pd.DataFrame) -> pd.Series:
     return df.apply(lambda row: f"pandas formatted: {row.id} {row.value}", axis=1)
 ```
 
-In this case `row` will be passed in a `Series` object, and the `axis=1` is necessary to specify that the series should be all
+In this case `row` will be passed in as a `Series` object, and the `axis=1` is necessary to specify that the series should be all
 the columns for a single row, rather than all the rows for a single column.
 
 This is similar to the `ordinary_python_udf` example, where arbitrary Python code is executed per row, but using Pandas for serialization.
 
 *Surprise!* in my contrived example I found the `pandas_apply_udf` version was actually *slower* than the `ordinary_python_udf` example.
 
-So I tried another thing, to use `raw` to improve performance within `apply`:
+So I tried using `raw` to improve performance, within `apply`:
 
 ```python
 @pandas_udf(returnType="string")
@@ -88,7 +88,7 @@ def pandas_apply_udf(df: pd.DataFrame) -> pd.Series:
     return df.apply(lambda row: f"pandas formatted: {row[id]} {row[value]}", axis=1, raw=True)
 ```
 
-This was almost as fast as the `pandas_vectorized_udf` version.
+This was almost as fast as the `pandas_vectorized_udf` version!
 
 The Pandas `DataFrame` documentation says [this about `apply`](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.apply.html): 
 > If `raw=True`, the passed function will receive ndarray objects instead of Series. This can improve performance when applying NumPy reduction functions or 
@@ -97,8 +97,8 @@ The Pandas `DataFrame` documentation says [this about `apply`](https://pandas.py
 My best guess here is, the overhead of creating a Series object for each row was sufficient to negate
 the benefits of serialization from Pandas UDFs.
 
-The catch with `raw` is, since the passed function gets an ndarray instead of a Series, you index into individual struct fields by position rather
-than name.  So in order to preserve similar behavior you can get the column list from the DataFrame and determine the position of each
+The catch with `raw` is, since the argument passed to your function is an ndarray instead of a Series, you have to index the individual struct fields
+by position rather than by name.  So in order to preserve similar behavior you can get the column list from the DataFrame and determine the position of each
 field.
 
 So, `pandas_udf` is a valuable tool for PySpark UDF performance, but you need to be aware of how it works to see the benefits.
